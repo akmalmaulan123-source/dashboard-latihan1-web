@@ -1,0 +1,78 @@
+:root{--ink:#1b2530;--mut:#5f6c78;--paper:#eef1f4;--card:#fff;--line:#d5dbe1;--F:#0f7b8a;--M:#6a4c93;--bar:#9db0c0;--hot:#d9731a;--pos:#2f5d9e;--neg:#c4572b}
+@media(prefers-color-scheme:dark){:root{--ink:#e6ebf0;--mut:#9aa7b3;--paper:#12171d;--card:#1b222a;--line:#323c47;--F:#35b3c4;--M:#a98bd6;--bar:#5d7285}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 "Segoe UI","Helvetica Neue",Arial,sans-serif}
+.top{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--card);border-bottom:1px solid var(--line)}
+h1{font-size:1.15rem;margin:0}h1 span{color:var(--mut);font-weight:400;margin-left:8px}
+main{max-width:1100px;margin:0 auto;padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:20px;margin:16px 0}
+h2{font-size:1.05rem;margin:0 0 4px}.cap{color:var(--mut);margin:4px 0 12px;font-size:.88rem}
+.scroll{overflow-x:auto}
+.seg{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0}
+.seg button{border:1px solid var(--line);background:none;color:var(--ink);padding:5px 12px;border-radius:6px;font:inherit;cursor:pointer}
+.seg button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+button:focus-visible,select:focus-visible,td.c:focus-visible{outline:2px solid var(--pos);outline-offset:2px}
+svg{width:100%;max-width:760px;height:auto;display:block;font-size:11px;fill:var(--mut)}
+.pick{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin:16px 0 4px}
+select{font:inherit;padding:4px 8px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:6px}
+#reg{color:var(--ink);font-variant-numeric:tabular-nums}
+
+table{border-collapse:separate;border-spacing:0;width:100%;font-variant-numeric:tabular-nums;font-size:.92rem}
+th,td{padding:9px 12px;text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+thead th,tr:first-child th{background:var(--paper)}
+th{font-weight:600;color:var(--mut);font-size:.8rem;background:var(--paper)}
+tr.grp th{text-align:center;color:var(--ink);font-size:.78rem;border-bottom:1px solid var(--line);padding:6px 12px}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;z-index:1}
+td:first-child{background:var(--card)}
+td.nm{font-weight:600}
+.gs{border-left:1px solid var(--line)}
+tr:not(.grp):hover td{background:color-mix(in srgb,var(--bar) 18%,var(--card))}
+#ledger tr:nth-child(even) td,#cmp tr:nth-child(even) td{background:color-mix(in srgb,var(--paper) 55%,var(--card))}
+#ledger tr:nth-child(even):hover td,#cmp tr:nth-child(even):hover td{background:color-mix(in srgb,var(--bar) 18%,var(--card))}
+td.key{font-weight:700;color:var(--ink)}
+td.win{font-weight:700}td.win.F{color:var(--F)}td.win.M{color:var(--M)}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.8rem;font-weight:600;border:1px solid var(--line)}
+.badge.besar{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.badge.sedang{border-color:var(--ink)}
+.badge.kecil{color:var(--mut)}
+#heat{width:auto;border-spacing:3px}
+#heat th,#heat td{border:0;padding:0}
+#heat th.hc{text-align:center;width:64px;padding:4px 0 8px;background:none}
+#heat td.nm{padding-right:14px;background:var(--card)}
+#heat td.c{width:64px;height:40px;text-align:center;cursor:pointer;font-size:.82rem;border-radius:5px}
+#heat td.c:hover{box-shadow:0 0 0 2px var(--ink)}
+#heat td.c.sel{box-shadow:0 0 0 2px var(--ink)}
+@media(max-width:700px){th,td{padding:8px}.top{padding:10px 14px}}
+
+/* ===== Tema baru ===== */
+:root{--paper:#e9eef3;--accent:#2f5d9e;--hd:#14283d;--shadow:0 1px 2px rgba(20,40,61,.06),0 6px 18px rgba(20,40,61,.06)}
+@media(prefers-color-scheme:dark){:root{--paper:#0e1319;--accent:#6ea2ea;--hd:#0a0f14;--shadow:0 1px 2px rgba(0,0,0,.4)}}
+body{font-size:15.5px;line-height:1.55;letter-spacing:.005em}
+.top{background:var(--hd);color:#fff;border-bottom:3px solid var(--accent);padding:14px 28px}
+.top h1{font-size:1.25rem;letter-spacing:.01em}.top h1 span{color:#9fb3c8}
+.top .seg{margin:0}
+.top .seg button{color:#dbe6f1;border-color:rgba(255,255,255,.28);padding:6px 14px}
+.top .seg button:hover{background:rgba(255,255,255,.1)}
+.top .seg button.on{background:#fff;color:var(--hd);border-color:#fff;font-weight:600}
+main{padding:20px 16px 48px;counter-reset:s}
+.lead{margin:8px 4px 4px;color:var(--mut)}.lead a{color:var(--accent);font-weight:600;text-decoration:none;margin-left:6px}.lead a:hover{text-decoration:underline}
+section{border:0;border-radius:12px;box-shadow:var(--shadow);padding:24px 26px;margin:20px 0;border-top:4px solid var(--accent)}
+section h2{display:flex;align-items:center;gap:10px;font-size:1.2rem;margin-bottom:2px}
+section h2::before{counter-increment:s;content:counter(s);display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700}
+.cap{font-size:.9rem;margin-bottom:14px}
+.seg button{transition:background .15s}
+.seg button:hover:not(.on){background:var(--paper)}
+thead th,tr:first-child th,th{background:var(--paper);color:var(--ink);font-weight:600}
+th{border-bottom:2px solid var(--line)}
+select{padding:6px 10px}
+#reg{background:var(--paper);padding:6px 12px;border-radius:6px;font-size:.9rem}
+/* keputusan */
+.decide{border-top-color:var(--hot)}.decide h2::before{background:var(--hot)}
+.cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;counter-reset:d}
+.cards li{counter-increment:d;position:relative;background:var(--paper);border-radius:10px;padding:18px 18px 16px 18px;border-left:4px solid var(--hot)}
+.cards li::before{content:counter(d);position:absolute;top:12px;right:14px;font-size:1.6rem;font-weight:700;color:var(--line)}
+.cards h3{margin:0 0 6px;font-size:1rem;padding-right:28px}
+.cards p{margin:0;color:var(--ink);font-size:.94rem}
+.note{margin-top:18px;padding:16px 18px;border-radius:10px;border:1px solid var(--hot);background:color-mix(in srgb,var(--hot) 8%,var(--card))}
+.note h3{margin:0 0 6px;font-size:1rem}.note ul{margin:0;padding-left:20px}.note li{margin:4px 0}
+@media print{.top{position:static}section{box-shadow:none;border:1px solid var(--line)}}

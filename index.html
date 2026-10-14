@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Statistik Deskriptif – latihan1</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Statistik deskriptif <span id="n"></span></h1>
+  <div class="seg" id="gender" role="group" aria-label="Filter gender">
+    <button data-g="all" class="on">Semua</button><button data-g="F">Perempuan (F)</button><button data-g="M">Laki-laki (M)</button>
+  </div>
+</header>
+<main>
+  <p class="lead">Dataset <b>latihan1</b>: 100 mahasiswa, 10 variabel. Gunakan filter gender di atas untuk melihat angka per kelompok. <a href="#keputusan">Lompat ke keputusan ↓</a></p>
+  <section>
+    <h2>Ringkasan tiap variabel</h2>
+    <p class="cap">Kolom “Sebaran”: histogram; kotak gelap = Q1–Q3; garis oranye = median.</p>
+    <div class="scroll"><table id="ledger"></table></div>
+  </section>
+  <section>
+    <h2>Distribusi</h2>
+    <div class="seg" id="hv"></div>
+    <div class="scroll"><svg id="dist" viewBox="0 0 640 310"></svg></div>
+    <p class="cap">Batang ditumpuk per gender. Kotak = Q1–Q3, garis tipis = min–maks, garis putus-putus = rata-rata.</p>
+  </section>
+  <section>
+    <h2>Perbandingan gender</h2>
+    <div class="scroll"><table id="cmp"></table></div>
+    <p class="cap">d = selisih rata-rata ÷ SD gabungan (Cohen). |d| ≥ 0,8 dianggap besar.</p>
+  </section>
+  <section>
+    <h2>Korelasi antar variabel</h2>
+    <p class="cap">Pearson r. Klik sel untuk melihat diagram pencarnya.</p>
+    <div class="scroll"><table id="heat"></table></div>
+    <div class="pick"><label>X <select id="sx"></select></label> <label>Y <select id="sy"></select></label> <span id="reg"></span></div>
+    <div class="scroll"><svg id="sc" viewBox="0 0 640 340"></svg></div>
+  </section>
+  <section id="keputusan" class="decide">
+    <h2>Keputusan yang bisa diambil</h2>
+    <p class="cap">Disusun dari statistik deskriptif di atas.</p>
+    <ol class="cards">
+      <li><h3>Kehadiran sebagai indikator dini</h3><p>Kehadiran paling kuat terkait nilai dan mudah dipantau. Ada 16 mahasiswa dengan kehadiran di bawah 80% dan 16 dengan nilai di bawah 60, daftar ini bisa jadi target intervensi.</p></li>
+      <li><h3>Bimbingan untuk laki-laki dan usia 21–22</h3><p>Kelompok ini punya jam belajar terendah (8,1 jam), tidur terpendek (5,9 jam), dan nilai terendah (64,3). Mahasiswa dengan 5 jam belajar, 5 jam tidur, dan 9–10 jam layar (nilai 48–50) paling mendesak.</p></li>
+      <li><h3>Program kebiasaan, bukan hanya akademik</h3><p>Manajemen waktu layar, edukasi tidur 7–8 jam, dan jadwal belajar terstruktur layak dicoba karena semuanya bergerak searah dengan nilai.</p></li>
+      <li><h3>Kepuasan dan pengeluaran sebagai sinyal tambahan</h3><p>Pengeluaran tinggi dan kepuasan rendah selalu muncul bersama nilai rendah, jadi keduanya bisa melengkapi sistem peringatan dini.</p></li>
+      <li><h3>Selidiki perbedaan gender</h3><p>Jangan langsung memutuskan lewat gender. Cari tahu penyebabnya, misalnya beban kerja, jadwal, atau lingkungan belajar.</p></li>
+    </ol>
+    <div class="note">
+      <h3>Catatan kehati-hati</h3>
+      <ul>
+        <li><b>Korelasi bukan sebab-akibat.</b> Menambah jam belajar belum tentu menaikkan nilai sebesar kemiringan garisnya (sekitar 3,6 poin per jam).</li>
+        <li><b>Datanya terlalu rapi.</b> Korelasi 0,95–0,99 hampir tidak pernah terjadi di data nyata, kemungkinan ini data latihan atau sintetis. Keputusan nyata perlu data asli yang lebih besar dan acak.</li>
+        <li><b>Satuan tidak tercantum di CSV.</b> Diasumsikan kehadiran dalam persen, belajar per minggu, tidur dan layar per hari.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
