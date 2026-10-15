@@ -1,5 +1,5 @@
 const V=[['Age','Usia'],['Study_Hours','Jam belajar'],['Sleep_Hours','Jam tidur'],['Attendance','Kehadiran'],['Exam_Score','Nilai ujian'],['Monthly_Spending','Pengeluaran bulanan'],['Screen_Hours','Jam layar'],['Satisfaction','Kepuasan']];
-const L=Object.fromEntries(V),S={rows:[],g:'all',hv:'Exam_Score',sx:'Study_Hours',sy:'Exam_Score'};
+const L=Object.fromEntries(V),S={rows:[],g:'all',age:'all',q:'',risk:false,sk:'Student_ID',sd:1,hv:'Exam_Score',sx:'Study_Hours',sy:'Exam_Score'};
 const sum=a=>a.reduce((x,y)=>x+y,0),mean=a=>sum(a)/a.length;
 const qt=(s,p)=>{const i=(s.length-1)*p,l=Math.floor(i);return s[l]+(s[Math.min(l+1,s.length-1)]-s[l])*(i-l)};
 const sdev=a=>{const m=mean(a);return Math.sqrt(sum(a.map(x=>(x-m)**2))/(a.length-1))};
@@ -9,7 +9,8 @@ function desc(a){const s=[...a].sort((x,y)=>x-y),n=s.length,m=mean(a),d=sdev(a),
   sk:n*sum(a.map(x=>((x-m)/d)**3))/((n-1)*(n-2))}}
 function corr(x,y){const mx=mean(x),my=mean(y);let a=0,b=0,c=0;x.forEach((v,i)=>{a+=(v-mx)*(y[i]-my);b+=(v-mx)**2;c+=(y[i]-my)**2});return a/Math.sqrt(b*c)}
 const f=(x,d=2)=>x==null||isNaN(x)?'—':(+x.toFixed(d)).toLocaleString('id-ID');
-const rows=()=>S.rows.filter(r=>S.g=='all'||r.Gender==S.g),col=(R,k)=>R.map(r=>r[k]);
+const ageOk=r=>S.age=='all'||r.Age==S.age;
+const rows=()=>S.rows.filter(r=>(S.g=='all'||r.Gender==S.g)&&ageOk(r)),col=(R,k)=>R.map(r=>r[k]);
 if(typeof module!=='undefined')module.exports={desc,corr};
 
 function spark(a,d){const W=130,B=10,w=(d.max-d.min)||1,c=Array(B).fill(0);
@@ -28,7 +29,7 @@ function dist(){const k=S.hv,R=rows(),d=desc(col(R,k)),W=640,P={l:30,r:10,t:10,b
   X=v=>P.l+(v-d.min)/w*iw,cnt={F:Array(B).fill(0),M:Array(B).fill(0)};
   R.forEach(r=>cnt[r.Gender][Math.min(B-1,Math.floor((r[k]-d.min)/w*B))]++);
   const T=Math.max(...cnt.F.map((v,i)=>v+cnt.M[i])),Y=v=>P.t+ih-v/T*ih;let s='';
-  for(let i=0;i<B;i++){let y0=0;['F','M'].forEach(g=>{const v=cnt[g][i];if(v){s+=`<rect x="${P.l+i*bw+1}" y="${Y(y0+v)}" width="${bw-2}" height="${Y(y0)-Y(y0+v)}" fill="var(--${g})"><title>${g}: ${v}</title></rect>`;y0+=v}})}
+  for(let i=0;i<B;i++){let y0=0;['F','M'].forEach(g=>{const v=cnt[g][i];if(v){s+=`<rect x="${P.l+i*bw+1}" y="${Y(y0+v)}" width="${bw-2}" height="${Y(y0)-Y(y0+v)}" fill="var(--${g})"><title>${g=='F'?'Perempuan':'Laki-laki'}: ${v} mahasiswa</title></rect>`;y0+=v}})}
   for(let i=0;i<=B;i+=2)s+=`<text x="${P.l+i*bw}" y="${P.t+ih+14}" text-anchor="middle">${f(d.min+w*i/B,1)}</text>`;
   for(let v=0;v<=T;v+=Math.ceil(T/4))s+=`<text x="${P.l-6}" y="${Y(v)+4}" text-anchor="end">${v}</text>`;
   s+=`<line x1="${X(d.m)}" x2="${X(d.m)}" y1="${P.t}" y2="${P.t+ih}" stroke="var(--ink)" stroke-dasharray="4 3"/><text x="${X(d.m)+4}" y="${P.t+10}">rata-rata ${f(d.m)}</text>`;
@@ -38,7 +39,7 @@ function dist(){const k=S.hv,R=rows(),d=desc(col(R,k)),W=640,P={l:30,r:10,t:10,b
 
 function cmp(){const el=document.getElementById('cmp');
   if(S.g!='all'){el.innerHTML='<tr><td>Pilih “Semua” pada filter gender untuk membandingkan.</td></tr>';return}
-  const F=S.rows.filter(r=>r.Gender=='F'),M=S.rows.filter(r=>r.Gender=='M');
+  const F=S.rows.filter(r=>r.Gender=='F'&&ageOk(r)),M=S.rows.filter(r=>r.Gender=='M'&&ageOk(r));
   el.innerHTML='<tr class="grp"><th></th><th colspan="2" class="gs">Rata-rata</th><th class="gs"></th><th colspan="2" class="gs">Standar deviasi</th><th class="gs">Besar efek</th></tr><tr><th>Variabel</th><th class="gs">Perempuan (F)</th><th>Laki-laki (M)</th><th class="gs">Selisih F−M</th><th class="gs">F</th><th>M</th><th class="gs">Cohen d</th></tr>'+V.map(([k,l])=>{
     const a=desc(col(F,k)),b=desc(col(M,k)),sp=Math.sqrt(((a.n-1)*a.sd**2+(b.n-1)*b.sd**2)/(a.n+b.n-2)),d=(a.m-b.m)/sp,z=Math.abs(d),sz=z>=.8?'besar':z>=.5?'sedang':'kecil',w=d>=0?'F':'M';
     return`<tr><td class="nm">${l}</td><td class="gs ${w=='F'?'win F':''}">${f(a.m)}</td><td class="${w=='M'?'win M':''}">${f(b.m)}</td><td class="gs">${d>=0?'+':''}${f(a.m-b.m)}</td><td class="gs">${f(a.sd)}</td><td>${f(b.sd)}</td><td class="gs"><span class="badge ${sz}">${f(d)} · ${sz}</span></td></tr>`}).join('')}
@@ -61,7 +62,7 @@ function scatter(){const R=rows(),x=col(R,S.sx),y=col(R,S.sy),W=640,H=340,P={l:4
   document.getElementById('sc').innerHTML=s;
   document.getElementById('reg').textContent=`r = ${f(rr)} · R² = ${f(rr*rr)} · kemiringan = ${f(b,3)} ${L[S.sy]} per 1 ${L[S.sx]}`}
 
-function all(){ledger();dist();cmp();heat();scatter()}
+function all(){kpi();ledger();dist();cmp();heat();scatter();explorer()}
 function pick(){document.getElementById('sx').value=S.sx;document.getElementById('sy').value=S.sy;heat();scatter()}
 Promise.resolve(window.DATA).then(d=>{S.rows=d;
   const hv=document.getElementById('hv');
@@ -72,4 +73,43 @@ Promise.resolve(window.DATA).then(d=>{S.rows=d;
   const h=document.getElementById('heat');
   const hit=e=>{const c=e.target.closest('td.c');if(c){S.sx=c.dataset.x;S.sy=c.dataset.y;pick()}};
   h.onclick=hit;h.onkeydown=e=>{if(e.key=='Enter'||e.key==' '){e.preventDefault();hit(e)}};
-  all();pick()});
+  buildAge(d);all();pick()});
+
+/* ===== Tambahan v2: tooltip, KPI, filter usia, tema, tabel data ===== */
+const $=id=>document.getElementById(id),tip=$('tip');
+document.documentElement.classList.add('js');
+document.addEventListener('mouseover',e=>{const t=e.target.closest('rect,circle,td.c');let m=null;
+  if(t){m=t.dataset.tip;const ti=t.querySelector('title');if(!m&&ti){m=ti.textContent;t.dataset.tip=m;ti.remove()}
+    if(!m&&t.classList.contains('c'))m=`${L[t.dataset.x]} × ${L[t.dataset.y]}: r = ${t.textContent}`}
+  if(m){tip.textContent=m;tip.style.opacity=1}else tip.style.opacity=0});
+document.addEventListener('mousemove',e=>{tip.style.left=Math.max(4,Math.min(e.clientX+14,innerWidth-tip.offsetWidth-8))+'px';tip.style.top=(e.clientY+18)+'px'});
+document.addEventListener('mouseleave',()=>tip.style.opacity=0);
+
+const KP={};
+function countTo(el,to,dec){const from=KP[el.id]??0;KP[el.id]=to;const t0=performance.now();
+  (function step(t){const p=Math.min(1,(t-t0)/700),e=1-Math.pow(1-p,3);el.textContent=f(from+(to-from)*e,dec);if(p<1)requestAnimationFrame(step)})(t0)}
+function kpi(){const R=rows(),el=$('kpi');if(!el.children.length)el.innerHTML=[['k1','Mahasiswa',''],['k2','Rata-rata nilai ujian',''],['k3','Rata-rata kehadiran','%'],['k4','Nilai di bawah 60','']].map(([i,l,u])=>`<div><small>${l}</small><b><span id="${i}">0</span>${u}</b><em id="${i}s"></em></div>`).join('');
+  const ex=col(R,'Exam_Score'),low=ex.filter(v=>v<60).length;
+  countTo($('k1'),R.length,0);countTo($('k2'),mean(ex),1);countTo($('k3'),mean(col(R,'Attendance')),1);countTo($('k4'),low,0);
+  $('k4s').textContent=`${f(low/R.length*100,0)}% dari yang ditampilkan`;$('k2s').textContent=`median ${f(desc(ex).med,1)} · SD ${f(desc(ex).sd,1)}`}
+
+function buildAge(d){const a=[...new Set(d.map(r=>r.Age))].sort((x,y)=>x-y);
+  $('age').innerHTML='<button data-a="all" class="on">Semua usia</button>'+a.map(v=>`<button data-a="${v}">${v}</button>`).join('');
+  $('age').onclick=e=>{const v=e.target.dataset.a;if(v==null)return;S.age=v=='all'?'all':+v;$('age').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.a==v));all()}}
+
+function explorer(){const H=['Student_ID','Gender','Age','Study_Hours','Sleep_Hours','Attendance','Exam_Score','Monthly_Spending','Screen_Hours','Satisfaction'],T={...L,Student_ID:'ID',Gender:'Gender'};
+  const R=rows().filter(r=>(!S.risk||r.Exam_Score<60)&&(!S.q||Object.values(r).join(' ').toLowerCase().includes(S.q)));
+  R.sort((a,b)=>(a[S.sk]>b[S.sk]?1:a[S.sk]<b[S.sk]?-1:0)*S.sd);
+  $('xtab').innerHTML='<tr>'+H.map(k=>`<th data-s="${k}" class="srt">${T[k]}${S.sk==k?(S.sd>0?' ▲':' ▼'):''}</th>`).join('')+'</tr>'+
+   R.map(r=>`<tr class="${r.Exam_Score<60?'risk':''}">`+H.map(k=>k=='Exam_Score'?`<td class="sc"><span style="width:${r[k]}%"></span><b>${f(r[k],0)}</b></td>`:`<td>${k=='Student_ID'||k=='Gender'?r[k]:f(r[k],1)}</td>`).join('')+'</tr>').join('');
+  $('xinfo').textContent=`${R.length} baris`}
+$('xq').oninput=e=>{S.q=e.target.value.toLowerCase().trim();explorer()};
+$('xr').onchange=e=>{S.risk=e.target.checked;explorer()};
+$('xtab').onclick=e=>{const k=e.target.dataset.s;if(!k)return;S.sd=S.sk==k?-S.sd:1;S.sk=k;explorer()};
+
+function theme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem('th',t)}catch(e){}$('theme').textContent=t=='dark'?'☀ Terang':'☾ Gelap'}
+$('theme').onclick=()=>theme(document.documentElement.dataset.theme=='dark'?'light':'dark');
+theme((()=>{try{return localStorage.getItem('th')}catch(e){}})()||(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+
+const io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.06}):null;
+document.querySelectorAll('section').forEach(s=>io?io.observe(s):s.classList.add('in'));

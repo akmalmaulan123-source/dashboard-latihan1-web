@@ -76,3 +76,37 @@ select{padding:6px 10px}
 .note{margin-top:18px;padding:16px 18px;border-radius:10px;border:1px solid var(--hot);background:color-mix(in srgb,var(--hot) 8%,var(--card))}
 .note h3{margin:0 0 6px;font-size:1rem}.note ul{margin:0;padding-left:20px}.note li{margin:4px 0}
 @media print{.top{position:static}section{box-shadow:none;border:1px solid var(--line)}}
+
+/* ===== Tema v2 ===== */
+:root,:root[data-theme=light]{--ink:#14213d;--mut:#5b6b82;--paper:#eef2f9;--card:#fff;--line:#d9e1ee;--F:#0e8a9a;--M:#7048b8;--bar:#a9bdd6;--accent:#2f5bd8;--hot:#e0731a;--shadow:0 1px 2px rgba(20,33,61,.06),0 10px 28px rgba(20,33,61,.08);--g1:#1e3a8a;--g2:#0e7490}
+:root[data-theme=dark]{--ink:#e8edf8;--mut:#9fb0cb;--paper:#0b1020;--card:#141c32;--line:#2a3654;--F:#3cc4d6;--M:#a98bf0;--bar:#52688c;--accent:#7aa2ff;--hot:#ffa24d;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);--g1:#1b1f55;--g2:#0c4a5c}
+body{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 12%,var(--paper)) 0,var(--paper) 380px) no-repeat,var(--paper);color:var(--ink)}
+.top{background:linear-gradient(120deg,var(--g1),var(--g2));color:#fff;border-bottom:0;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.top h1 span{color:#b9d3ef}
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.top .seg{margin:0;gap:3px;background:rgba(255,255,255,.12);padding:3px;border-radius:9px}
+.top .seg button,.tg{border:0;color:#e6f0ff;background:none;padding:5px 12px;border-radius:7px;font:inherit;cursor:pointer;transition:background .15s}
+.top .seg button:hover,.tg:hover{background:rgba(255,255,255,.18)}
+.top .seg button.on{background:#fff;color:#14213d;font-weight:600}
+.tg{background:rgba(255,255,255,.12)}
+section{border:0;border-top:4px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);background:var(--card)}
+.js section{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}.js section.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.js section{opacity:1;transform:none;transition:none}}
+@media print{.js section{opacity:1!important;transform:none!important}}
+section h2::before{background:linear-gradient(135deg,var(--g1),var(--g2))}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:6px 0 0}
+.kpi div{background:var(--card);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);border-left:5px solid var(--accent);transition:transform .2s}
+.kpi div:hover{transform:translateY(-3px)}
+.kpi small{display:block;color:var(--mut)}.kpi b{font-size:2rem;font-variant-numeric:tabular-nums}.kpi em{display:block;font-style:normal;color:var(--mut);font-size:.82rem}
+th{background:var(--paper);color:var(--ink)}
+.cards li{transition:transform .2s,box-shadow .2s;background:var(--paper)}.cards li:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+svg rect:hover,svg circle:hover{filter:brightness(1.15);stroke:var(--ink);stroke-width:1}
+#heat td.c{transition:transform .12s}#heat td.c:hover{transform:scale(1.12);z-index:2;position:relative}
+#tip{position:fixed;z-index:60;pointer-events:none;opacity:0;transition:opacity .12s;background:var(--ink);color:var(--card);padding:6px 10px;border-radius:7px;font-size:.82rem;max-width:260px;box-shadow:var(--shadow)}
+.xbar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:10px}
+.xbar input[type=search]{font:inherit;padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);min-width:240px}
+#xinfo{color:var(--mut);margin-left:auto}
+.xs{max-height:460px;overflow:auto;border:1px solid var(--line);border-radius:8px}
+.xs th{position:sticky;top:0;z-index:2;cursor:pointer;user-select:none}.xs th:first-child{left:0;z-index:3}
+tr.risk td:first-child{box-shadow:inset 4px 0 0 var(--neg)}tr.risk{background:color-mix(in srgb,var(--neg) 10%,transparent)}
+td.sc{position:relative;min-width:90px}td.sc span{position:absolute;left:0;top:20%;bottom:20%;background:color-mix(in srgb,var(--accent) 28%,transparent);border-radius:0 4px 4px 0}td.sc b{position:relative}
